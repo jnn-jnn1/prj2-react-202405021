@@ -21,6 +21,8 @@ export function MemberSignup() {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
+  const [isCheckedEmail, setIsCheckedEmail] = useState(false);
+  const [isCheckedNickName, setIsCheckedNickName] = useState(false);
 
   function handleClick() {
     setIsLoading(true);
@@ -70,6 +72,7 @@ export function MemberSignup() {
             position: "top",
           });
         }
+        setIsCheckedEmail(true);
       })
       .finally();
   }
@@ -92,6 +95,7 @@ export function MemberSignup() {
             position: "top",
           });
         }
+        setIsCheckedNickName(true);
       })
       .finally();
   }
@@ -111,6 +115,12 @@ export function MemberSignup() {
   ) {
     isDisabled = true;
   }
+  if (!isCheckedNickName) {
+    isDisabled = true;
+  }
+  if (!isCheckedNickName) {
+    isDisabled = true;
+  }
 
   return (
     <Box>
@@ -120,7 +130,12 @@ export function MemberSignup() {
           <FormControl>
             <FormLabel>이메일</FormLabel>
             <InputGroup>
-              <Input onChange={(e) => setEmail(e.target.value)} />
+              <Input
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setIsCheckedEmail(false);
+                }}
+              />
               <InputRightElement w={"75px"} mr={1}>
                 <Button size={"sm"} onClick={handleCheckEmail}>
                   중복확인
@@ -148,7 +163,12 @@ export function MemberSignup() {
           <FormControl>
             <FormLabel>별명</FormLabel>
             <InputGroup>
-              <Input onChange={(e) => setNickName(e.target.value)} />
+              <Input
+                onChange={(e) => {
+                  setNickName(e.target.value);
+                  setIsCheckedNickName(false);
+                }}
+              />
               <InputRightElement w={"75px"} mr={1}>
                 <Button size={"sm"} onClick={handleCheckNickName}>
                   중복확인
