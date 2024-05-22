@@ -142,6 +142,9 @@ export function MemberSignup() {
                 </Button>
               </InputRightElement>
             </InputGroup>
+            {isCheckedEmail || (
+              <FormHelperText>이메일 중복확인을 해주세요</FormHelperText>
+            )}
           </FormControl>
         </Box>
         <Box>
@@ -175,6 +178,9 @@ export function MemberSignup() {
                 </Button>
               </InputRightElement>
             </InputGroup>
+            {isCheckedNickName || (
+              <FormHelperText>별명 중복확인을 해주세요</FormHelperText>
+            )}
           </FormControl>
         </Box>
         <Box>
