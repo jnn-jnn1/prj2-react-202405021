@@ -85,6 +85,10 @@ export function MemberEdit() {
     isDisableSaveButton = true;
   }
 
+  if (isCheckedNickName) {
+    isDisableNickNameCheckButton = true;
+  }
+
   function handleCheckNickName() {
     axios
       .get(`/api/member/check?nickName=${member.nickName}`)
