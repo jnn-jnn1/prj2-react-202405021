@@ -26,6 +26,7 @@ export function MemberEdit() {
   const navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [passwordCheck, setPasswordCheck] = useState("");
 
   useEffect(() => {
     axios
@@ -55,6 +56,12 @@ export function MemberEdit() {
     return <Spinner />;
   }
 
+  let isDisableSaveButton = false;
+
+  if (member.password != passwordCheck) {
+    isDisableSaveButton = true;
+  }
+
   return (
     <Box>
       <Box>회원 정보 수정</Box>
@@ -79,7 +86,10 @@ export function MemberEdit() {
       <Box>
         <FormControl>
           <FormLabel>암호 확인</FormLabel>
-          <Input />
+          <Input onChange={(e) => setPasswordCheck(e.target.value)} />
+          {member.password === passwordCheck || (
+            <FormHelperText>암호가 일치하지 않습니다</FormHelperText>
+          )}
         </FormControl>
       </Box>
       <Box>
@@ -92,7 +102,11 @@ export function MemberEdit() {
         </FormControl>
       </Box>
       <Box>
-        <Button onClick={onOpen} colorScheme={"blue"}>
+        <Button
+          onClick={onOpen}
+          colorScheme={"blue"}
+          isDisabled={isDisableSaveButton}
+        >
           저장
         </Button>
       </Box>
