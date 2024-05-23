@@ -7,9 +7,10 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../component/LoginProvider.jsx";
 
 export function BoardWrite() {
   const [title, setTitle] = useState("");
@@ -18,6 +19,7 @@ export function BoardWrite() {
   const toast = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const account = useContext(LoginContext);
 
   function handleSaveClick() {
     setLoading(true);
@@ -74,7 +76,7 @@ export function BoardWrite() {
         <Box>
           <FormControl>
             <FormLabel>작성자</FormLabel>
-            <Input onChange={(e) => setWriter(e.target.value)} />
+            <Input readOnly value={account.nickName} />
           </FormControl>
         </Box>
         <Box>
