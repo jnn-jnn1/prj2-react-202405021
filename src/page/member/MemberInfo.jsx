@@ -96,7 +96,12 @@ export function MemberInfo() {
           </FormControl>
         </Box>
         <Box>
-          <Button bgColor={"blue"}>수정</Button>
+          <Button
+            bgColor={"blue"}
+            onClick={() => navigate(`/member/edit/${member.id}`)}
+          >
+            수정
+          </Button>
           <Button bgColor={"red"} onClick={onOpen} isLoading={isLoading}>
             탈퇴
           </Button>
