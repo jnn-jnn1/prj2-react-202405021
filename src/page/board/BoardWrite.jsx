@@ -24,7 +24,15 @@ export function BoardWrite() {
   function handleSaveClick() {
     setLoading(true);
     axios
-      .post("/api/board/add", { title, content, writer })
+      .post(
+        "/api/board/add",
+        { title, content, writer },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      )
       .then(() => {
         toast({
           description: "새 글이 저장되었습니다.",
@@ -48,9 +56,6 @@ export function BoardWrite() {
 
   let disableSaveButton = false;
   if (title.trim().length === 0) {
-    disableSaveButton = true;
-  }
-  if (content.trim().length === 0) {
     disableSaveButton = true;
   }
   if (content.trim().length === 0) {
