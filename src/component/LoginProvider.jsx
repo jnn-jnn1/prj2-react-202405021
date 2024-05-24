@@ -17,14 +17,6 @@ export function LoginProvider({ children }) {
   }, []);
 
   function isLoggedIn() {
-    // 토근이 있고 유효하면 로그인됨
-    let token = localStorage.getItem("token");
-    const decode = jwtDecode(token);
-
-    let expires = decode.exp;
-  }
-
-  function isLoggedIn() {
     return Date.now() < expired * 1000;
   }
 

@@ -14,9 +14,10 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { LoginContext } from "../../component/LoginProvider.jsx";
 
 export function MemberInfo() {
   const { id } = useParams();
@@ -26,6 +27,7 @@ export function MemberInfo() {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [password, setPassword] = useState("");
+  const account = useContext(LoginContext);
 
   useEffect(() => {
     axios
@@ -50,13 +52,19 @@ export function MemberInfo() {
   function handleClickRemove() {
     setIsLoading(true);
     axios
-      .delete(`/api/member/${id}`, { data: { id, password } })
+      .delete(`/api/member/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        data: { id, password },
+      })
       .then(() => {
         toast({
           status: "success",
           description: "회원 탈퇴 되었습니다",
           position: "top",
         });
+        account.logout();
         navigate("/");
       })
       .catch(() => {
