@@ -3,6 +3,8 @@ import {
   Button,
   Center,
   Flex,
+  Input,
+  Select,
   Table,
   Tbody,
   Td,
@@ -27,6 +29,8 @@ export function BoardList() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [pageInfo, setPageInfo] = useState({});
+  const [searchType, setSearchType] = useState("all");
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const pageNumbers = [];
   for (let i = pageInfo.leftPageNumber; i <= pageInfo.rightPageNumber; i++) {
@@ -39,6 +43,10 @@ export function BoardList() {
       setPageInfo(res.data.pageInfo);
     });
   }, [searchParams]);
+
+  function handleSearchClick() {
+    navigate(`/?type?=${searchType}&keyword=${searchKeyword}`);
+  }
 
   return (
     <Box>
@@ -70,6 +78,26 @@ export function BoardList() {
           </Tbody>
         </Table>
       </Box>
+      <Center>
+        <Flex>
+          <Box>
+            <Select onChange={(e) => setSearchType(e.target.value)}>
+              <option value={"all"}>전체</option>
+              <option value={"text"}>글</option>
+              <option value={"nickName"}>작성자</option>
+            </Select>
+          </Box>
+          <Box>
+            <Input
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              placeholder={"검색어"}
+            />
+          </Box>
+          <Box>
+            <Button onClick={handleSearchClick}>검색</Button>
+          </Box>
+        </Flex>
+      </Center>
       <Center>
         <Flex>
           <Box>
