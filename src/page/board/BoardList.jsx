@@ -60,6 +60,9 @@ export function BoardList() {
           <Button
             key={pageNumber}
             onClick={() => navigate(`/?page=${pageNumber}`)}
+            colorScheme={
+              pageNumber === pageInfo.currentPageNumber ? "blue" : "gray"
+            }
           >
             {pageNumber}
           </Button>
