@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
   Textarea,
@@ -20,19 +21,12 @@ export function BoardWrite() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const account = useContext(LoginContext);
+  const [files, setFiles] = useState([]);
 
   function handleSaveClick() {
     setLoading(true);
     axios
-      .post(
-        "/api/board/add",
-        { title, content, writer },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      )
+      .postForm("/api/board/add", { title, content, files })
       .then(() => {
         toast({
           description: "새 글이 저장되었습니다.",
@@ -62,6 +56,11 @@ export function BoardWrite() {
     disableSaveButton = true;
   }
 
+  const fileNameList = [];
+  for (let i = 0; i < files.length; i++) {
+    fileNameList.push(<li>{files[i].name}</li>);
+  }
+
   return (
     <Box>
       <Box>글 작성 화면</Box>
@@ -74,9 +73,28 @@ export function BoardWrite() {
         </Box>
         <Box>
           <FormControl>
-            <FormLabel>작성자</FormLabel>
+            <FormLabel>본문</FormLabel>
             <Textarea onChange={(e) => setContent(e.target.value)} />
           </FormControl>
+        </Box>
+        <Box>
+          <FormControl>
+            <FormLabel>파일 첨부</FormLabel>
+            <Input
+              type={"file"}
+              accept={"image/*"}
+              multiple
+              onChange={(e) => {
+                setFiles(e.target.files);
+              }}
+            />
+            <FormHelperText>
+              총 용량은 10MB, 한 파일은 1MB를 초과할 수 없습니다
+            </FormHelperText>
+          </FormControl>
+        </Box>
+        <Box>
+          <ul>{fileNameList}</ul>
         </Box>
         <Box>
           <FormControl>
