@@ -6,6 +6,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormHelperText,
   FormLabel,
   Image,
   Input,
@@ -32,6 +33,8 @@ export function BoardEdit() {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [board, setBoard] = useState(null);
   const [removeFileList, setRemoveFileList] = useState([]);
+  const [addFileList, setAddFileList] = useState([]);
+
   useEffect(() => {
     axios.get(`/api/board/${id}`).then((res) => setBoard(res.data));
   }, []);
@@ -75,6 +78,11 @@ export function BoardEdit() {
       setRemoveFileList(removeFileList.filter((item) => item !== name));
     }
     return undefined;
+  }
+
+  const fileNameList = [];
+  for (let addFile of addFileList) {
+    fileNameList.push(<li>{addFile.name}</li>);
   }
 
   return (
@@ -124,6 +132,25 @@ export function BoardEdit() {
                 </Box>
               </Box>
             ))}
+        </Box>
+        <Box>
+          <FormControl>
+            <FormLabel>파일 첨부</FormLabel>
+            <Input
+              type={"file"}
+              accept={"image/*"}
+              multiple
+              onChange={(e) => {
+                setAddFileList(e.target.files);
+              }}
+            />
+            <FormHelperText>
+              총 용량은 10MB, 한 파일은 1MB를 초과할 수 없습니다
+            </FormHelperText>
+          </FormControl>
+        </Box>
+        <Box>
+          <ul>{fileNameList}</ul>
         </Box>
         <Box>
           <FormControl>
