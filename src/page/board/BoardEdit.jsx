@@ -112,7 +112,14 @@ export function BoardEdit() {
                   <Text>{file.name}</Text>
                 </Flex>
                 <Box>
-                  <Image src={file.src} />
+                  <Image
+                    sx={
+                      removeFileList.includes(file.name)
+                        ? { filter: "blur(8px)" }
+                        : {}
+                    }
+                    src={file.src}
+                  />
                 </Box>
               </Box>
             ))}
