@@ -4,6 +4,7 @@ import axios from "axios";
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Image,
@@ -15,10 +16,14 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Switch,
+  Text,
   Textarea,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export function BoardEdit() {
   const { id } = useParams();
@@ -26,6 +31,7 @@ export function BoardEdit() {
   const navigate = useNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [board, setBoard] = useState(null);
+  const [removeFileList, setRemoveFileList] = useState([]);
   useEffect(() => {
     axios.get(`/api/board/${id}`).then((res) => setBoard(res.data));
   }, []);
@@ -61,6 +67,15 @@ export function BoardEdit() {
     return <Spinner />;
   }
 
+  function handleRemoveSwitchChange(name, checked) {
+    if (checked === true) {
+      setRemoveFileList([...removeFileList, name]);
+    } else {
+      setRemoveFileList(removeFileList.filter((item) => item !== name));
+    }
+    return undefined;
+  }
+
   return (
     <Box>
       <Box>{board.id}번 게시물 수정</Box>
@@ -87,7 +102,18 @@ export function BoardEdit() {
           {board.files &&
             board.files.map((file) => (
               <Box border={"2px solid black"} m={3} key={file.name}>
-                <Image src={file.src} />
+                <Flex>
+                  <FontAwesomeIcon icon={faTrash} />
+                  <Switch
+                    onChange={(e) =>
+                      handleRemoveSwitchChange(file.name, e.target.checked)
+                    }
+                  />
+                  <Text>{file.name}</Text>
+                </Flex>
+                <Box>
+                  <Image src={file.src} />
+                </Box>
               </Box>
             ))}
         </Box>
