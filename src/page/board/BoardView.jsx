@@ -34,8 +34,10 @@ export function BoardView() {
   const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const account = useContext(LoginContext);
-  const [like, setLike] = useState(false);
-
+  const [like, setLike] = useState({
+    like: false,
+    count: 0,
+  });
   useEffect(() => {
     axios
       .get(`/api/board/${id}`)
@@ -88,10 +90,15 @@ export function BoardView() {
       <Flex>
         <Heading>{board.id}번 게시물</Heading>
         <Spacer />
-        <Box cursor={"pointer"} fontSize={"3xl"} onClick={() => setLike(!like)}>
-          {like && <FontAwesomeIcon icon={fullHeart} />}
-          {like || <FontAwesomeIcon icon={emptyHeart} />}
+        <Box
+          cursor={"pointer"}
+          fontSize={"3xl"}
+          onClick={() => setLike({ ...like, like: !like.like })}
+        >
+          {like.like && <FontAwesomeIcon icon={fullHeart} />}
+          {like.like || <FontAwesomeIcon icon={emptyHeart} />}
         </Box>
+        <Box fontSize={"3xl"}>{like.count}</Box>
       </Flex>
       <Box>
         <FormControl>
