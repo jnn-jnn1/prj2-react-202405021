@@ -3,8 +3,9 @@ import axios from "axios";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export function CommentItem({ comment }) {
+export function CommentItem({ comment, isDeleting, setIsDeleting }) {
   function handleRemoveClick() {
+    setIsDeleting(true);
     axios
       .delete("/api/comment/remove", {
         data: { id: comment.id },
