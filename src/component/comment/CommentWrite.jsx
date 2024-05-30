@@ -1,12 +1,24 @@
-import { Box, Button, Textarea } from "@chakra-ui/react";
+import { Box, Button, Textarea, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
 
-export function CommentWrite({ boardId }) {
+export function CommentWrite({ boardId, isSending, setIsSending }) {
   const [comment, setComment] = useState("");
+  const toast = useToast();
 
   function handleCommentSubmitClick() {
-    axios.post("/api/comment/add", { comment, boardId });
+    setIsSending(true);
+    axios
+      .post("/api/comment/add", { comment, boardId })
+      .then(() => {
+        setComment("");
+        toast({
+          status: "success",
+          description: "댓글 작성 완료",
+          position: "top",
+        });
+      })
+      .finally(() => setIsSending(false));
   }
 
   return (
@@ -16,7 +28,11 @@ export function CommentWrite({ boardId }) {
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       />
-      <Button colorScheme={"blue"} onClick={handleCommentSubmitClick}>
+      <Button
+        isLoading={isSending}
+        colorScheme={"blue"}
+        onClick={handleCommentSubmitClick}
+      >
         댓글입력
       </Button>
     </Box>
