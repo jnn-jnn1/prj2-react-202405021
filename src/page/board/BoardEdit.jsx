@@ -37,7 +37,7 @@ export function BoardEdit() {
   const [addFileList, setAddFileList] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/board/${id}`).then((res) => setBoard(res.data));
+    axios.get(`/api/board/${id}`).then((res) => setBoard(res.data.board));
   }, []);
 
   function handleClickSave() {
