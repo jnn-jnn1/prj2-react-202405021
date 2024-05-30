@@ -19,6 +19,7 @@ import {
   Spacer,
   Spinner,
   Textarea,
+  Tooltip,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -91,11 +92,20 @@ export function BoardView() {
   }
 
   function handleClickLike() {
+    if (!account.isLoggedIn()) {
+      return;
+    }
     setIsLikeProcessing(true);
     axios
       .put("/api/board/like", { boardId: board.id })
       .then((res) => setLike(res.data))
-      .catch()
+      .catch(() =>
+        toast({
+          description: "회원이 아닙니다",
+          position: "top",
+          status: "info",
+        }),
+      )
       .finally(setIsLikeProcessing(false));
   }
 
@@ -105,10 +115,16 @@ export function BoardView() {
         <Flex>
           <Heading>{board.id}번 게시물</Heading>
           <Spacer />
-          <Box cursor={"pointer"} fontSize={"3xl"} onClick={handleClickLike}>
-            {like.like && <FontAwesomeIcon icon={fullHeart} />}
-            {like.like || <FontAwesomeIcon icon={emptyHeart} />}
-          </Box>
+          <Tooltip
+            isDisabled={account.isLoggedIn()}
+            hasArrow
+            label={"로그인 해주세요"}
+          >
+            <Box cursor={"pointer"} fontSize={"3xl"} onClick={handleClickLike}>
+              {like.like && <FontAwesomeIcon icon={fullHeart} />}
+              {like.like || <FontAwesomeIcon icon={emptyHeart} />}
+            </Box>
+          </Tooltip>
           <Box fontSize={"3xl"}>{like.count}</Box>
         </Flex>
       )}
