@@ -3,20 +3,19 @@ import axios from "axios";
 import { Box } from "@chakra-ui/react";
 import { CommentItem } from "./CommentItem.jsx";
 
-export function CommentList({ boardId, isSending }) {
+export function CommentList({ boardId, isProcessing, setIsProcessing }) {
   const [commentList, setCommentList] = useState([]);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    if (!isSending) {
+    if (!isProcessing) {
       axios
         .get(`/api/comment/list/${boardId}`)
         .then((res) => {
           setCommentList(res.data);
         })
-        .finally(setIsDeleting(false));
+        .finally();
     }
-  }, [isSending, isDeleting]);
+  }, [isProcessing]);
   if (commentList.length === 0) {
     return <Box>댓글이 없습니다. 첫 댓글을 작성해보세요</Box>;
   }
@@ -26,8 +25,8 @@ export function CommentList({ boardId, isSending }) {
         <CommentItem
           comment={comment}
           key={comment.id}
-          isDeleting={isDeleting}
-          setIsDeleting={setIsDeleting}
+          isProcessing={isProcessing}
+          setIsProcessing={setIsProcessing}
         />
       ))}
     </Box>

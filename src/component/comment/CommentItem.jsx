@@ -3,14 +3,15 @@ import axios from "axios";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export function CommentItem({ comment, isDeleting, setIsDeleting }) {
+export function CommentItem({ comment, isProcessing, setIsProcessing }) {
   function handleRemoveClick() {
-    setIsDeleting(true);
+    setIsProcessing(true);
     axios
       .delete("/api/comment/remove", {
         data: { id: comment.id },
       })
-      .then();
+      .then()
+      .finally(() => setIsProcessing(false));
   }
 
   return (
@@ -27,7 +28,7 @@ export function CommentItem({ comment, isDeleting, setIsDeleting }) {
           <Box>{comment.comment}</Box>
         </Box>
         <Box>
-          <Button onClick={handleRemoveClick}>
+          <Button isLoading={isProcessing} onClick={handleRemoveClick}>
             <FontAwesomeIcon icon={faTrash} />
           </Button>
         </Box>

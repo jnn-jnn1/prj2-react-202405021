@@ -3,13 +3,13 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { LoginContext } from "../LoginProvider.jsx";
 
-export function CommentWrite({ boardId, isSending, setIsSending }) {
+export function CommentWrite({ boardId, setIsProcessing, isProcessing }) {
   const [comment, setComment] = useState("");
   const toast = useToast();
   const account = useContext(LoginContext);
 
   function handleCommentSubmitClick() {
-    setIsSending(true);
+    setIsProcessing(true);
     axios
       .post("/api/comment/add", { comment, boardId })
       .then(() => {
@@ -20,7 +20,7 @@ export function CommentWrite({ boardId, isSending, setIsSending }) {
           position: "top",
         });
       })
-      .finally(() => setIsSending(false));
+      .finally(() => setIsProcessing(false));
   }
 
   return (
@@ -42,7 +42,7 @@ export function CommentWrite({ boardId, isSending, setIsSending }) {
       >
         <Button
           isDisabled={comment.trim().length === 0 || !account.isLoggedIn()}
-          isLoading={isSending}
+          isLoading={isProcessing}
           colorScheme={"blue"}
           onClick={handleCommentSubmitClick}
         >
