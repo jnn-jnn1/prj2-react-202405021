@@ -23,6 +23,7 @@ import {
   faAngleRight,
   faAnglesLeft,
   faAnglesRight,
+  faComment,
   faHeart,
   faImages,
 } from "@fortawesome/free-solid-svg-icons";
@@ -103,6 +104,12 @@ export function BoardList() {
                       <Badge>
                         <FontAwesomeIcon icon={faImages} />
                         {board.numberOfImages}
+                      </Badge>
+                    )}
+                    {board.numberOfComments > 0 && (
+                      <Badge>
+                        <FontAwesomeIcon icon={faComment} />
+                        {board.numberOfComments}
                       </Badge>
                     )}
                   </Td>
