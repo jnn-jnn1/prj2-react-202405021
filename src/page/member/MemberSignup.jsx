@@ -1,9 +1,11 @@
 import {
   Box,
   Button,
+  Center,
   FormControl,
   FormHelperText,
   FormLabel,
+  Heading,
   Input,
   InputGroup,
   InputRightElement,
@@ -35,7 +37,7 @@ export function MemberSignup() {
           description: "회원가입이 완료되었습니다.",
           position: "top",
         });
-        navigate("/");
+        navigate("/login");
       })
       .catch((err) => {
         if (err.response.status === 400) {
@@ -128,93 +130,97 @@ export function MemberSignup() {
   }
 
   return (
-    <Box>
-      <Box>회원가입</Box>
-      <Box>
-        <Box>
-          <FormControl>
-            <FormLabel>이메일</FormLabel>
-            <InputGroup>
-              <Input
-                type={"email"}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setIsCheckedEmail(false);
-                  setIsValidEmail(!e.target.validity.typeMismatch);
-                }}
-              />
-              <InputRightElement w={"75px"} mr={1}>
-                <Button
-                  isDisabled={!isValidEmail || email.trim().length === 0}
-                  size={"sm"}
-                  onClick={handleCheckEmail}
-                >
-                  중복확인
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            {isCheckedEmail || (
-              <FormHelperText>이메일 중복확인을 해주세요</FormHelperText>
-            )}
-            {isValidEmail || (
-              <FormHelperText>
-                올바른 이메일 형식으로 작성해 주세요.
-              </FormHelperText>
-            )}
-          </FormControl>
+    <Center>
+      <Box w={400}>
+        <Box mb={10}>
+          <Heading>회원가입</Heading>
         </Box>
         <Box>
-          <FormControl>
-            <FormLabel>암호</FormLabel>
-            <Input onChange={(e) => setPassword(e.target.value)} />
-          </FormControl>
-        </Box>
-        <Box>
-          <FormControl>
-            <FormLabel>암호확인</FormLabel>
-            <Input onChange={(e) => setPasswordCheck(e.target.value)} />
-            {isCheckedPassword || (
-              <FormHelperText>암호가 일치하지 않습니다</FormHelperText>
-            )}
-          </FormControl>
-        </Box>
-        <Box>
-          <FormControl>
-            <FormLabel>별명</FormLabel>
-            <InputGroup>
-              <Input
-                value={nickName}
-                onChange={(e) => {
-                  setNickName(e.target.value.trim());
-                  setIsCheckedNickName(false);
-                }}
-              />
-              <InputRightElement w={"75px"} mr={1}>
-                <Button
-                  size={"sm"}
-                  onClick={handleCheckNickName}
-                  isDisabled={email.trim().length === 0}
-                >
-                  중복확인
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            {isCheckedNickName || (
-              <FormHelperText>별명 중복확인을 해주세요</FormHelperText>
-            )}
-          </FormControl>
-        </Box>
-        <Box>
-          <Button
-            isLoading={isLoading}
-            colorScheme={"blue"}
-            onClick={handleClick}
-            isDisabled={isDisabled}
-          >
-            가입
-          </Button>
+          <Box mb={7}>
+            <FormControl>
+              <FormLabel>이메일</FormLabel>
+              <InputGroup>
+                <Input
+                  type={"email"}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setIsCheckedEmail(false);
+                    setIsValidEmail(!e.target.validity.typeMismatch);
+                  }}
+                />
+                <InputRightElement w={"75px"} mr={1}>
+                  <Button
+                    isDisabled={!isValidEmail || email.trim().length === 0}
+                    size={"sm"}
+                    onClick={handleCheckEmail}
+                  >
+                    중복확인
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              {isCheckedEmail || (
+                <FormHelperText>이메일 중복확인을 해주세요</FormHelperText>
+              )}
+              {isValidEmail || (
+                <FormHelperText>
+                  올바른 이메일 형식으로 작성해 주세요.
+                </FormHelperText>
+              )}
+            </FormControl>
+          </Box>
+          <Box mb={7}>
+            <FormControl>
+              <FormLabel>암호</FormLabel>
+              <Input onChange={(e) => setPassword(e.target.value)} />
+            </FormControl>
+          </Box>
+          <Box mb={7}>
+            <FormControl>
+              <FormLabel>암호확인</FormLabel>
+              <Input onChange={(e) => setPasswordCheck(e.target.value)} />
+              {isCheckedPassword || (
+                <FormHelperText>암호가 일치하지 않습니다</FormHelperText>
+              )}
+            </FormControl>
+          </Box>
+          <Box mb={7}>
+            <FormControl>
+              <FormLabel>별명</FormLabel>
+              <InputGroup>
+                <Input
+                  value={nickName}
+                  onChange={(e) => {
+                    setNickName(e.target.value.trim());
+                    setIsCheckedNickName(false);
+                  }}
+                />
+                <InputRightElement w={"75px"} mr={1}>
+                  <Button
+                    size={"sm"}
+                    onClick={handleCheckNickName}
+                    isDisabled={email.trim().length === 0}
+                  >
+                    중복확인
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              {isCheckedNickName || (
+                <FormHelperText>별명 중복확인을 해주세요</FormHelperText>
+              )}
+            </FormControl>
+          </Box>
+          <Box mb={7}>
+            <Button
+              isLoading={isLoading}
+              colorScheme={"blue"}
+              onClick={handleClick}
+              isDisabled={isDisabled}
+            >
+              가입
+            </Button>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </Center>
   );
 }
