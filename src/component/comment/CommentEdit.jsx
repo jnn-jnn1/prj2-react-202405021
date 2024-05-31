@@ -13,9 +13,14 @@ export function CommentEdit({
   const [commentText, setCommentText] = useState(comment.comment);
 
   function handleCommentSubmit() {
+    setIsProcessing(true);
     axios
       .put("/api/comment/edit", { id: comment.id, comment: commentText })
-      .then();
+      .then()
+      .finally(() => {
+        setIsProcessing(false);
+        setIsEditing(false);
+      });
   }
 
   return (
@@ -35,6 +40,7 @@ export function CommentEdit({
           <FontAwesomeIcon icon={faXmark} />
         </Button>
         <Button
+          isLoading={isProcessing}
           variant={"ghost"}
           colorScheme={"blue"}
           onClick={handleCommentSubmit}
