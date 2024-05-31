@@ -13,15 +13,17 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LoginContext } from "../LoginProvider.jsx";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { CommentEdit } from "./CommentEdit.jsx";
 
 export function CommentItem({ comment, isProcessing, setIsProcessing }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const account = useContext(LoginContext);
+  const [isEditing, setIsEditing] = useState(false);
 
   function handleRemoveClick() {
     setIsProcessing(true);
@@ -58,17 +60,33 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
       <Box>
         <Box>{comment.inserted}</Box>
       </Box>
-      <Flex>
-        <Box>{comment.comment}</Box>
-        <Spacer />
-        {account.hasAccess(comment.memberId) && (
-          <Box>
-            <Button isLoading={isProcessing} onClick={onOpen}>
-              <FontAwesomeIcon icon={faTrash} />
-            </Button>
-          </Box>
-        )}
-      </Flex>
+      {isEditing || (
+        <Flex>
+          <Box>{comment.comment}</Box>
+          <Spacer />
+          {account.hasAccess(comment.memberId) && (
+            <Box>
+              <Button>
+                <FontAwesomeIcon
+                  icon={faPenToSquare}
+                  onClick={() => setIsEditing(true)}
+                />
+              </Button>
+              <Button isLoading={isProcessing} onClick={onOpen}>
+                <FontAwesomeIcon icon={faTrash} />
+              </Button>
+            </Box>
+          )}
+        </Flex>
+      )}
+      {isEditing && (
+        <CommentEdit
+          comment={comment}
+          setIsEditing={setIsEditing}
+          isProcessing={isProcessing}
+          setIsProcessing={setIsProcessing}
+        />
+      )}
       {account.hasAccess(comment.memberId) && (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
