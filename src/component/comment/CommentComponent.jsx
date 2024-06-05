@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import { CommentWrite } from "./CommentWrite.jsx";
 import { CommentList } from "./CommentList.jsx";
 import { useState } from "react";
@@ -18,6 +18,7 @@ export function CommentComponent({ boardId }) {
         isProcessing={isProcessing}
         setIsProcessing={setIsProcessing}
       />
+      <Heading>COMMENTS</Heading>
     </Box>
   );
 }

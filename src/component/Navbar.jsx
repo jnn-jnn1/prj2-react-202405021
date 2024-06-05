@@ -27,7 +27,7 @@ export function Navbar() {
         fontSize={24}
         fontWeight={600}
       >
-        Home
+        HOME_CHANGE
       </Center>
       {account.isLoggedIn() && (
         <Center
